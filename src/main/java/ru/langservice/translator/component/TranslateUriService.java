@@ -12,8 +12,8 @@ import org.springframework.web.util.UriComponentsBuilder;
 import java.net.URI;
 
 @Component
-public class TranslatorUriService {
-    private static final Logger log = LoggerFactory.getLogger(TranslatorUriService.class);
+public class TranslateUriService {
+    private static final Logger log = LoggerFactory.getLogger(TranslateUriService.class);
 
     @Value("${translate.user.key}")
     private String uriUserKey;
@@ -29,20 +29,19 @@ public class TranslatorUriService {
     @Value("${translate.uri.path.translate}")
     private String translatePath;
 
-    public URI getLangsUri(){
+    public URI getLangsUri() {
         return createServiceUri(langsPath);
     }
 
-    public URI getTranslateUri(final MultiValueMap<String, String> queryParams){
+    public URI getTranslateUri(final MultiValueMap<String, String> queryParams) {
         return createServiceUri(translatePath, queryParams);
     }
 
-    private URI createServiceUri(final String path){
-        return createServiceUri(path,
-                );
+    private URI createServiceUri(final String path) {
+        return createServiceUri(path, new LinkedMultiValueMap<>());
     }
 
-    private URI createServiceUri(final String path, final MultiValueMap<String, String> queryParams){
+    private URI createServiceUri(final String path, final MultiValueMap<String, String> queryParams) {
         queryParams.add("ui", "en");
         queryParams.add("key", uriUserKey);
 
@@ -50,8 +49,7 @@ public class TranslatorUriService {
                 .scheme(uriScheme)
                 .host(uriHost)
                 .path(uriPath + path)
-                .queryParams(queryParams)
-                .build();
+                .queryParams(queryParams).build();
 
         log.info("request: " + uriComponents.toUriString());
         return uriComponents.toUri();

@@ -18,10 +18,10 @@ import java.net.URI;
 @SpringBootApplication
 public class TranslatorApplication {
 
-	private static final Logger log = LoggerFactory.getLogger(TranslatorApplication.class);
+    private static final Logger log = LoggerFactory.getLogger(TranslatorApplication.class);
 
-	public static void main(String[] args) {
-		SpringApplication.run(TranslatorApplication.class, args);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(TranslatorApplication.class, args);
+    }
 
 }
