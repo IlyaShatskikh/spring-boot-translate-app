@@ -1,6 +1,6 @@
 package ru.langservice.translator.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -12,10 +12,9 @@ import java.util.Collections;
 import java.util.Map;
 
 @Controller
+@AllArgsConstructor
 public class RegistrationController {
-
-    @Autowired
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
 
     @GetMapping("/registration")
     public String registration(){
@@ -28,7 +27,6 @@ public class RegistrationController {
         if (userFromRepository != null ) {
             model.put("message", "user already exists");
             return "registration";
-            //TODO return "/registration";
         }
         user.setActive(true);
         user.setRoles(Collections.singleton(Role.USER));
