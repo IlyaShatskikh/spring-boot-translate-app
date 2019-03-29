@@ -1,31 +1,43 @@
 <#import "parts/common.ftl" as common>
-<#import "parts/login.ftl" as login>
+
 <@common.page>
-    <@login.logout/>
-    <span><a href="/user">User list</a></span>
-    <div>
-        <form method="post" action="post">
-            <input type="text" name="text" placeholder="Введите текст">
-            <input type="text" name="lang" placeholder="Введите направление перевода">
-            <input type="hidden" name="_csrf" value="${_csrf.token}"/>
-            <button type="submit">Перевести</button>
+<h2 class="mb-1">Translations</h2>
+
+<div class="form-row">
+    <div class="form-group col-md-6">
+        <form method="post" action="post" class="form-inline">
+            <input type="text" name="text" class="form-control" placeholder="Input text">
+            <input type="text" name="lang" class="form-control ml-2" placeholder="Input lang">
+            <button type="submit" class="btn btn-primary ml-2">Translate</button>
         </form>
     </div>
-    <div>Translations</div>
-    <form method="get" action="/main">
-        <input type="text" name="filter" value="${filter}}">
-        <button type="submit">Найти</button>
-    </form>
+</div>
 
-    <#list translations as translation>
-    <div>
-        <b>${translation.id}</b>
-        <span>${translation.text}</span>
-        <i>${translation.lang}</i>
-        <strong>${translation.user.username}</strong>
+<div class="form-row">
+    <div class="form-group col-md-6">
+        <form method="get" action="/translation" class="form-inline">
+            <input type="text" name="filter" value="${filter}" class="form-control" placeholder="Search by lang">
+            <button type="submit" class="btn btn-primary ml-2">Search</button>
+        </form>
     </div>
-    <#else>
-    No translations
-    </#list>
+</div>
 
+<table class="table">
+    <thead>
+        <tr>
+            <th scope="col">Text</th>
+            <th scope="col">Lang</th>
+            <th scope="col">User</th>
+        </tr>
+    </thead>
+    <tbody>
+        <#list translations as translation>
+            <tr>
+                <td>${translation.text}</td>
+                <td>${translation.lang}</td>
+                <td>${translation.user.username}</td>
+            </tr>
+        </#list>
+    </tbody>
+</table>
 </@common.page>
