@@ -1,25 +1,73 @@
 <#macro login path isRegisterForm>
-    <form action="${path}" method="post">
-        <div class="form-group row">
-            <label for="inputUsername" class="col-sm-2 col-form-label">User name</label>
-            <div class="col-sm-6">
-                <input type="text" name="username" class="form-control" id="inputUsername" placeholder="User name">
+    <style>
+        .form-signin {
+            width: 100%;
+            max-width: 330px;
+            padding: 15px;
+            margin: auto;
+        }
+        .form-signin .checkbox {
+            font-weight: 400;
+        }
+        .form-signin .form-control {
+            position: relative;
+            box-sizing: border-box;
+            height: auto;
+            padding: 10px;
+            font-size: 16px;
+        }
+        .form-signin .form-control:focus {
+            z-index: 2;
+        }
+        .form-signin input[type="email"] {
+            margin-bottom: -1px;
+            border-bottom-right-radius: 0;
+            border-bottom-left-radius: 0;
+        }
+        .form-signin input[type="password"] {
+            margin-bottom: 10px;
+            border-top-left-radius: 0;
+            border-top-right-radius: 0;
+        }
+    </style>
+
+<div class="text-center">
+    <form action="${path}" method="post" class="form-signin">
+        <#if Session?? && Session.SPRING_SECURITY_LAST_EXCEPTION?? && RequestParameters.error??>
+            <div class="alert alert-danger" role="alert">
+                ${Session.SPRING_SECURITY_LAST_EXCEPTION.message}
             </div>
-        </div>
-        <div class="form-group row">
-            <label for="inputPassword" class="col-sm-2 col-form-label">Password</label>
-            <div class="col-sm-6">
-                <input type="text" name="password" class="form-control" id="inputPassword" placeholder="Password">
-            </div>
-        </div>
+        </#if>
+        <label for="inputUsername" class="sr-only">Username</label>
+        <input type="text" id="inputUsername" name="username" class="form-control ${(usernameError??)?string('is-invalid','')}" value="<#if user??>${user.username}</#if>" placeholder="Username" required autofocus/>
+        <#if usernameError??>
+            <small class="form-text text-muted">${usernameError}</small>
+        </#if>
+
+        <label for="inputPassword" class="sr-only">Password</label>
+        <input type="password" id="inputPassword" name="password" class="form-control ${(passwordError??)?string('is-invalid','')}" placeholder="Password" required/>
+        <#if passwordError??>
+            <small class="form-text text-muted">${passwordError}</small>
+        </#if>
+
+        <#if isRegisterForm>
+            <label for="inputPasswordConfirm" class="sr-only">Password confirm</label>
+            <input type="password" id="inputPasswordConfirm" name="passwordConfirm" class="form-control ${(passwordConfirmError??)?string('is-invalid','')}" placeholder="Confirm password" required/>
+            <#if passwordConfirmError??>
+                <small class="form-text text-muted">${passwordConfirmError}</small>
+            </#if>
+        </#if>
+
         <input type="hidden" name="_csrf" value="${_csrf.token}" />
-        <div class="form-group row">
-            <div class="col-sm-6">
-                <button type="submit" class="btn btn-primary"><#if isRegisterForm>Submit<#else>Log in</#if></button>
-                <#if !isRegisterForm><a href="/registration">Sign Up</a></#if>
-            </div>
+
+        <button class="btn btn-lg btn-primary btn-block" type="submit"><#if isRegisterForm>Submit<#else>Sign in</#if></button>
+        <div class="mt-2">
+            <#if !isRegisterForm><a href="/registration">Register new user</a></#if>
         </div>
+
+        <p class="mt-5 mb-3 text-muted">&copy; 2019</p>
     </form>
+</div>
 </#macro>
 
 <#macro logout>

@@ -1,6 +1,6 @@
 <#import "parts/common.ftl" as common>
 <@common.page>
-User editor
+<h2 class="mb-1">User edit</h2>
 <form action="/user" method="post">
     <input type="text" value="${user.username}" name="username">
     <#list roles as role>

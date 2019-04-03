@@ -1,9 +1,12 @@
 package ru.langservice.translator.controller;
 
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.StringUtils;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -11,10 +14,12 @@ import ru.langservice.translator.domain.Translation;
 import ru.langservice.translator.domain.User;
 import ru.langservice.translator.repository.TranslationRepository;
 
+import javax.validation.Valid;
 import java.util.Map;
 
 @Controller
 @AllArgsConstructor
+@Slf4j
 public class TranslationController {
     private final TranslationRepository translationRepository;
 
@@ -24,22 +29,37 @@ public class TranslationController {
     }
 
     @GetMapping("/translation")
-    public String translation(@RequestParam(required = false, defaultValue = "") String filter, Model model) {
+    public String translation(@AuthenticationPrincipal User user, @RequestParam(required = false, defaultValue = "") String filter, Model model) {
         Iterable<Translation> translations;
-        translations = (filter == null || filter.isEmpty()) ? translationRepository.findAll() : translationRepository.findByLang(filter);
+        if (StringUtils.isEmpty(filter)){
+            log.debug("Filter is empty. Get all translations");
+            translations = translationRepository.findByUserId(user.getId());
+        }
+        else {
+            log.debug("Filter: {}", filter);
+            translations = translationRepository.findByLangAndUserId(filter, user.getId());
+        }
         model.addAttribute("translations", translations);
         model.addAttribute("filter", filter);
         return "translation";
     }
 
     @PostMapping("post")
-    public String add(@AuthenticationPrincipal User user, @RequestParam String text, @RequestParam String lang, Map<String, Object> model) {
-        Translation translation = new Translation(text, lang, user);
-        translationRepository.save(translation);
+    public String add(@AuthenticationPrincipal User user, @Valid Translation translation, BindingResult bindingResult, Model model) {
+        translation.setUser(user);
+        if (bindingResult.hasErrors()){
+            Map<String, String> errors = ControllerUtils.getErrors(bindingResult);
+            log.debug("Errors: {}", errors);
+            model.addAllAttributes(errors);
+            model.addAttribute("translation", translation);
+        } else {
+            log.debug("Save translation: {}", translation);
+            model.addAttribute("translation", null);
+            translationRepository.save(translation);
+        }
 
-        //todo fix it!
         Iterable<Translation> translations = translationRepository.findAll();
-        model.put("translations", translations);
+        model.addAttribute("translations", translations);
         return "translation";
     }
 }

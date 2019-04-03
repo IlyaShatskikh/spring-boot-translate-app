@@ -1,0 +1,2 @@
+insert into usr(id, active, expired, locked, password, username) values (1, true, false, false, '$2a$08$fNUHI3FnO3cbT6VAcClJOOsIq93f2101ud2RAKiZFAh7Y2h.oFRzC', 'user1');
+insert into usr_role(user_id, roles) values (1, 'ADMIN'), (1, 'USER');

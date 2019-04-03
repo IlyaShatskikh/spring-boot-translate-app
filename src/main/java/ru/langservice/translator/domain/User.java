@@ -1,24 +1,34 @@
 package ru.langservice.translator.domain;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 import java.util.Collection;
 import java.util.Set;
 
 @Entity
 @Table(name = "usr")
 @Data
+@EqualsAndHashCode(of = "id")
 public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
+    @NotBlank(message = "Username can't be empty")
     private String username;
+    @NotBlank(message = "Password can't be empty")
     private String password;
+    @Transient
+    @NotBlank(message = "Password can't be empty")
+    private String passwordConfirm;
     private boolean active;
+    private boolean expired;
+    private boolean locked;
 
     @ElementCollection(targetClass = Role.class, fetch = FetchType.EAGER)
     @CollectionTable(name = "usr_role", joinColumns = @JoinColumn(name = "user_id"))
@@ -37,12 +47,12 @@ public class User implements UserDetails {
 
     @Override
     public boolean isAccountNonExpired() {
-        return true;
+        return !isExpired();
     }
 
     @Override
     public boolean isAccountNonLocked() {
-        return true;
+        return !isLocked();
     }
 
     @Override

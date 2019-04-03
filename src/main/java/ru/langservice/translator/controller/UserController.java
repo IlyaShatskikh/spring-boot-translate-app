@@ -7,23 +7,20 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import ru.langservice.translator.domain.Role;
 import ru.langservice.translator.domain.User;
-import ru.langservice.translator.repository.UserRepository;
+import ru.langservice.translator.service.UserService;
 
-import java.util.Arrays;
 import java.util.Map;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 @Controller
 @AllArgsConstructor
 @RequestMapping("/user")
 @PreAuthorize("hasAuthority('ADMIN')")
 public class UserController {
-    private final UserRepository userRepository;
+    private final UserService userService;
 
     @GetMapping
     public String userList(Model model){
-        model.addAttribute("users", userRepository.findAll());
+        model.addAttribute("users", userService.findAll());
         return "userList";
     }
 
@@ -36,19 +33,7 @@ public class UserController {
 
     @PostMapping
     public String userSave(@RequestParam String username, @RequestParam Map<String, String> form, @RequestParam("userId") User user){
-        user.setUsername(username);
-        user.getRoles().clear();
-
-        Set<String> roles = Arrays.stream(Role.values())
-                .map(Role::name)
-                .collect(Collectors.toSet());
-
-        form.keySet().stream()
-                .filter(roles::contains)
-                .map(Role::valueOf)
-                .forEach(s -> user.getRoles().add(s));
-
-        userRepository.save(user);
+        userService.saveUser(user, username, form);
         return "redirect:/user";
     }
 
