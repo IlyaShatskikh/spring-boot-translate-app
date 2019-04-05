@@ -10,9 +10,11 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.client.RestTemplate;
 import ru.langservice.translator.domain.Translation;
 import ru.langservice.translator.domain.User;
 import ru.langservice.translator.repository.TranslationRepository;
+import ru.langservice.translator.service.TranslateService;
 
 import javax.validation.Valid;
 import java.util.Map;
@@ -22,6 +24,8 @@ import java.util.Map;
 @Slf4j
 public class TranslationController {
     private final TranslationRepository translationRepository;
+    private final TranslateService translateService;
+    private final RestTemplate restTemplate;
 
     @GetMapping("/")
     public String welcome(Map<String, Object> model){
@@ -39,6 +43,9 @@ public class TranslationController {
             log.debug("Filter: {}", filter);
             translations = translationRepository.findByLangAndUserId(filter, user.getId());
         }
+        log.debug("Get langs");
+        Map<String, String> langs = translateService.getLangs(restTemplate);
+        model.addAttribute("langs", langs);
         model.addAttribute("translations", translations);
         model.addAttribute("filter", filter);
         return "translation";
@@ -57,6 +64,10 @@ public class TranslationController {
             model.addAttribute("translation", null);
             translationRepository.save(translation);
         }
+
+        log.debug("Get langs");
+        Map<String, String> langs = translateService.getLangs(restTemplate);
+        model.addAttribute("langs", langs);
 
         Iterable<Translation> translations = translationRepository.findAll();
         model.addAttribute("translations", translations);

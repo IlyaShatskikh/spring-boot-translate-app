@@ -16,20 +16,26 @@ public class Translation {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    @NotBlank(message = "Please fill the message")
+
+    @NotBlank(message = "Please fill the text")
     @Length(max = 2048, message = "Message too long")
-    private String text;
+    private String origText;
+
     @NotBlank(message = "Please fill the lang")
-    @Length(max = 5, message = "Message too long. For example en-ru")
+    @Length(max = 5, message = "Language too long. For example 'en-ru'")
     private String lang;
+
+    @Length(max = 2048, message = "Message too long")
+    private String resultText;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id")
     private User user;
 
-    public Translation(String text, String lang, User user) {
-        this.text = text;
+    public Translation(String text, String lang, String resultText, User user) {
+        this.origText = text;
         this.lang = lang;
+        this.resultText = resultText;
         this.user = user;
     }
 }

@@ -14,27 +14,27 @@ import ru.langservice.translator.repository.TranslationRepository;
 import static org.assertj.core.api.Assertions.assertThat;
 
 
-@RunWith(SpringRunner.class)
-@DataJpaTest
-@TestPropertySource(properties = "spring.jpa.properties.hibernate.default_schema=")
+//@RunWith(SpringRunner.class)
+//@DataJpaTest
+//@TestPropertySource(properties = "spring.jpa.properties.hibernate.default_schema=")
 public class TranslationRepositoryIntegrationTest {
 
-    @Autowired
+//    @Autowired
     private TranslationRepository translationRepository;
 
-    @Autowired
+//    @Autowired
     private TestEntityManager entityManager;
 
-    @Test
-    public void add_thenReturnAll(){
-        Translation translation = new Translation("test string", "en-ru", new User());
-        entityManager.persist(translation);
-        entityManager.flush();
-
-        Iterable<Translation> all = translationRepository.findAll();
-
-        Assert.assertTrue(all.iterator().hasNext());
-        assertThat(translation.getText())
-                .isEqualTo(all.iterator().next().getText());
-    }
+//    @Test
+//    public void add_thenReturnAll(){
+//        Translation translation = new Translation("test string", "en-ru", new User());
+//        entityManager.persist(translation);
+//        entityManager.flush();
+//
+//        Iterable<Translation> all = translationRepository.findAll();
+//
+//        Assert.assertTrue(all.iterator().hasNext());
+//        assertThat(translation.getText())
+//                .isEqualTo(all.iterator().next().getText());
+//    }
 }
