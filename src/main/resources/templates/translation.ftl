@@ -1,4 +1,5 @@
 <#import "parts/common.ftl" as common>
+<#import "parts/pager.ftl" as pages>
 
 <@common.page>
 <script type="text/javascript">
@@ -81,7 +82,7 @@
         </tr>
         </thead>
         <tbody>
-            <#list translations as translation>
+            <#list page.page.content as translation>
                 <tr>
                     <td>${translation.origText}</td>
                     <td><#if translation.resultText??>${translation.resultText}</#if></td>
@@ -92,4 +93,7 @@
         </tbody>
     </table>
 </div>
+
+<@pages.pager url page />
+
 </@common.page>
