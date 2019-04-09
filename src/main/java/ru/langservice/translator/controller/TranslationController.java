@@ -72,7 +72,7 @@ public class TranslationController {
         }
 
         log.trace("Getting translation...");
-        TranslateResult translateResult = translateService.getTanslate(restTemplate, translation.getOrigText(), translation.getLang());
+        TranslateResult translateResult = translateService.getTranslate(restTemplate, translation.getOrigText(), translation.getLang());
         if (translateResult != null && translateResult.getText() != null && !translateResult.getText().isEmpty()) {
             log.debug("Translation received successfully");
             translation.setResultText(String.join(" ", translateResult.getText()));

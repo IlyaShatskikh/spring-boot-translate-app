@@ -29,7 +29,7 @@ public class TranslateService {
         return getLangs.getLangs();
     }
 
-    public TranslateResult getTanslate(RestTemplate restTemplate, String text, String lang) {
+    public TranslateResult getTranslate(RestTemplate restTemplate, String text, String lang) {
         LinkedMultiValueMap<String, String> valueMap = new LinkedMultiValueMap<>();
         valueMap.add("lang", lang);
         valueMap.add("text", text);

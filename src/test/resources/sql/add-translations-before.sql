@@ -1,1 +1,1 @@
-insert into translation(id, lang, text, user_id) values(1, 'ru-en', 'first simple text', 1),(2, 'fr-en', 'second simple text', 1),(3, 'ru-en', 'third simple text', 1);
+INSERT INTO translation(id, orig_text, result_text, user_id, lang) VALUES(1, 'first simple text', 'первый простой текст', 1, 'en-ru'),(2, 'second simple text', 'второй простой текст', 1, 'en-ru'),(3, 'third simple text', 'третій простий текст', 1, 'en-ua');

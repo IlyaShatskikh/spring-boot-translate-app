@@ -27,7 +27,7 @@
                         <label class="input-group-text" for="langFromSelect">From</label>
                     </div>
                     <select class="custom-select" id="langFromSelect" name="langFrom">
-                        <option selected>Choose...</option>
+                        <!--<option selected>Choose...</option>-->
                         <#if langs??>
                             <#list langs?keys as key>
                                 <option value="${key}">${langs[key]}</option>
@@ -43,7 +43,7 @@
                         <label class="input-group-text" for="langToSelect">To</label>
                     </div>
                     <select class="custom-select" id="langToSelect" name="langTo">
-                        <option selected>Choose...</option>
+                        <!--<option selected>Choose...</option>-->
                         <#if langs??>
                             <#list langs?keys as key>
                                 <option value="${key}">${langs[key]}</option>

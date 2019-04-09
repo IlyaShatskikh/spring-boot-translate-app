@@ -1,4 +1,4 @@
-package ru.langservice.translator.service;
+package ru.langservice.translator;
 
 import org.hamcrest.CoreMatchers;
 import org.junit.Test;
@@ -17,6 +17,7 @@ import ru.langservice.translator.domain.User;
 import ru.langservice.translator.exception.UserAlreadyExistAuthenticationException;
 import ru.langservice.translator.repository.TranslationRepository;
 import ru.langservice.translator.repository.UserRepository;
+import ru.langservice.translator.service.UserService;
 
 import java.util.Collections;
 
