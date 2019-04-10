@@ -39,6 +39,9 @@ public class TranslateUriService {
     private URI createServiceUri(final String path, final MultiValueMap<String, String> queryParams) {
         queryParams.add("ui", "en");
         queryParams.add("key", uriUserKey);
+        if (uriUserKey == null){
+            log.error("user key is empty!");
+        }
         log.trace("Query parameters: {}", queryParams);
 
         UriComponents uriComponents = UriComponentsBuilder.fromHttpUrl(uri + path).queryParams(queryParams).build();

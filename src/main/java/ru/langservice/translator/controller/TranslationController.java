@@ -14,15 +14,19 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 import ru.langservice.translator.domain.PageWrapper;
 import ru.langservice.translator.domain.Translation;
 import ru.langservice.translator.domain.User;
 import ru.langservice.translator.dto.TranslateResult;
+import ru.langservice.translator.exception.NoLangsAvailableException;
 import ru.langservice.translator.repository.TranslationRepository;
 import ru.langservice.translator.service.TranslateService;
 
 import javax.validation.Valid;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.Map;
 
 @Controller
@@ -50,9 +54,14 @@ public class TranslationController {
         }
 
         log.debug("Get langs");
-        Map<String, String> langs = translateService.getLangs(restTemplate);
+        try{
+            Map<String, String> langs = translateService.getLangs(restTemplate);
+            model.addAttribute("langs", langs);
+        } catch (NoLangsAvailableException | HttpClientErrorException ex){
+            log.error("No langs. Exception message: {}", ex.getMessage());
+            model.addAttribute("langs", Collections.EMPTY_MAP);
+        }
 
-        model.addAttribute("langs", langs);
         model.addAttribute("page", new PageWrapper<>(page));
         model.addAttribute("url", "/translation");
         model.addAttribute("filter", filter);
