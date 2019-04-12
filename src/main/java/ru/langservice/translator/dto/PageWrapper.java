@@ -1,4 +1,4 @@
-package ru.langservice.translator.domain;
+package ru.langservice.translator.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

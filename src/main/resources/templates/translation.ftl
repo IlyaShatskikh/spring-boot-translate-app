@@ -2,11 +2,6 @@
 <#import "parts/pager.ftl" as pages>
 
 <@common.page>
-<script type="text/javascript">
-    function concatLangs(){
-            document.getElementById("lang").value = document.getElementById("langFromSelect").value + '-' + document.getElementById("langToSelect").value
-    }
-</script>
 <h2 class="mb-1">Translations</h2>
 <div class="container border rounded">
     <form method="post" action="post" class="mt-4" onsubmit="return concatLangs()">
@@ -95,5 +90,13 @@
 </div>
 
 <@pages.pager url page />
+
+<script type="text/javascript">
+    function concatLangs(){
+            document.getElementById("lang").value = document.getElementById("langFromSelect").value
+             + '-'
+             + document.getElementById("langToSelect").value
+    }
+</script>
 
 </@common.page>

@@ -21,10 +21,12 @@ public class TranslateService {
     @Cacheable(value = "langs", key = "#root.methodName")
     public Map<String, String> getLangs(RestTemplate restTemplate) {
         GetLangs getLangs = restTemplate.getForObject(translateUriService.getLangsUri(), GetLangs.class);
+
         if (getLangs == null || getLangs.getLangs() == null || getLangs.getLangs().isEmpty()) {
             log.debug("No langs available");
             throw new NoLangsAvailableException();
         }
+
         log.trace("Langs: {}", getLangs.getLangs());
         return getLangs.getLangs();
     }

@@ -39,6 +39,7 @@ public class UserService implements UserDetailsService {
             log.debug("User already exists. Username: {}", user.getUsername());
             throw new UserAlreadyExistAuthenticationException("User (username = "+ user.getUsername() +") already exists");
         }
+
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         user.setActive(true);
         user.setExpired(false);
