@@ -1,0 +1,20 @@
+version: '1'
+services:
+  translate:
+    container_name: translate_app
+    build: .
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://database/translate_db
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=password123
+      - TRANSLATE_USER_KEY=
+    depends_on:
+      - database
+  database:
+    container_name: postgres
+    image: postgres:9.5
+    environment:
+      - POSTGRES_PASSWORD=password123
+      - POSTGRES_DB=transtale_db
+    ports:
+      - 5432:5432
