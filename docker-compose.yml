@@ -1,4 +1,4 @@
-version: '1'
+version: '3'
 services:
   translate:
     container_name: translate_app
@@ -15,6 +15,6 @@ services:
     image: postgres:9.5
     environment:
       - POSTGRES_PASSWORD=password123
-      - POSTGRES_DB=transtale_db
+      - POSTGRES_DB=translate_db
     ports:
       - 5432:5432
