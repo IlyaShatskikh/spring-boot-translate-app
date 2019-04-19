@@ -3,6 +3,8 @@ services:
   translate:
     container_name: translate_app
     build: .
+    ports:
+      - 8080:8080
     environment:
       - SPRING_DATASOURCE_URL=jdbc:postgresql://database/translate_db
       - SPRING_DATASOURCE_USERNAME=postgres
