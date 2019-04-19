@@ -24,6 +24,7 @@ import ru.langservice.translator.service.TranslateService;
 import ru.langservice.translator.service.TranslationService;
 
 import javax.validation.Valid;
+import java.net.ConnectException;
 import java.util.Collections;
 import java.util.Map;
 
@@ -44,13 +45,13 @@ public class TranslationController {
     public String translation(@AuthenticationPrincipal User user, @RequestParam(required = false, defaultValue = "") String filter, Model model, @PageableDefault(sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
         Page<Translation> page = translationService.getTranslations(filter, user.getId(), pageable);
 
-        try{
+//        try{
             Map<String, String> langs = translateService.getLangs(restTemplate);
             model.addAttribute("langs", langs);
-        } catch (NoLangsAvailableException | HttpClientErrorException ex){
-            log.error("No langs. Exception message: {}", ex.getMessage());
-            model.addAttribute("langs", Collections.EMPTY_MAP);
-        }
+//        } catch (Exception ex){
+//            log.error("No langs. Exception message: {}", ex.getMessage());
+//            model.addAttribute("langs", Collections.EMPTY_MAP);
+//        }
 
         model.addAttribute("page", new PageWrapper<>(page));
         model.addAttribute("url", "/translation");
@@ -79,7 +80,7 @@ public class TranslationController {
             log.debug("Translation received successfully");
             translation.setResultText(String.join(" ", translateResult.getText()));
         } else {
-            log.warn("No translation received");
+            log.warn("No translation text received");
         }
 
         log.debug("Save translation: {}", translation);
