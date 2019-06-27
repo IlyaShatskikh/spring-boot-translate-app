@@ -27,6 +27,8 @@ Using:
 <br/>$ docker-compose up - start containers
 <br/>$ curl localhost:8080 - check welcome page
 
+Default user credentials: admin/admin123
+
 <br/>http://localhost:8080/login - login page
 <br/>http://localhost:8080/registration - register new user
 <br/>http://localhost:8080/translation - translating page
